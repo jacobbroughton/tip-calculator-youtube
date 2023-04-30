@@ -1,0 +1,15 @@
+nav {
+  background-color: teal;
+  width: 100%;
+  padding: 10px;
+}
+
+nav .nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+nav p {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
