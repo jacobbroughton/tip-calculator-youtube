@@ -1,0 +1,76 @@
+.tip-calculator {
+  width: 100%;
+  border: 1px grey solid;
+  display: flex;
+  border-radius: 5px;
+}
+
+.tip-calculator .section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding:25px 15px;
+  width: 100%;
+
+}
+
+.tip-calculator .section:not(:first-child) {
+  border-left: 1px solid grey;
+}
+
+.tip-calculator .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tip-calculator .form-group label {
+  font-weight: 600;
+}
+
+.tip-calculator .form-group input {
+  font-size: 1rem;
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  width: 100%;
+}
+
+.tip-calculator .form-group input::placeholder {
+  color: lightgrey;
+}
+
+.tip-calculator .form-group input.error {
+  border-color: red;
+  outline-color: red;
+}
+
+.tip-calculator .form-group .counter {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.tip-calculator .form-group .counter button {
+  font-size: 1.3rem;
+  width: 30px;
+  background-color: lightgrey;;
+  color: black;
+  border-radius: 3px;
+  border: 0;
+}
+
+@media screen and (max-width: 500px) {
+  .tip-calculator {
+    flex-direction: column;
+  }
+
+  .tip-calculator .section:not(:first-child) {
+    border-left: 0;
+    border-top: 1px solid grey;
+  }
+}
