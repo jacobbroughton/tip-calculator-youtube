@@ -43,30 +43,41 @@ const TipCalculator = () => {
 
   function handleTipPercentDecrement() {
     if (tipPercentInput === 0) return;
-    setTipPercentInput(`${parseFloat(tipPercentInput) - 1}`);
+    setTipPercentInput(`${parseFloat(tipPercentInput || "0") - 1}`);
+    calculateTip();
   }
 
   function handleTipPercentIncrement() {
-    setTipPercentInput(`${parseFloat(tipPercentInput) + 1}`);
+    console.log(tipPercentInput);
+    setTipPercentInput(`${parseFloat(tipPercentInput || "0") + 1}`);
+    calculateTip();
   }
 
   function handleNumberOfPeopleDecrement() {
     if (tipPercentInput === 0) return;
-    setNumberOfPeopleInput(`${parseInt(numberOfPeopleInput) - 1}`);
+    setNumberOfPeopleInput(`${parseInt(numberOfPeopleInput || "0") - 1}
+    `);
+    calculateTip();
   }
 
   function handleNumberOfPeopleIncrement() {
-    setNumberOfPeopleInput(`${parseInt(numberOfPeopleInput) + 1}`);
+    setNumberOfPeopleInput(`${parseInt(numberOfPeopleInput || "0") + 1}`);
+    calculateTip();
   }
 
-  function calculateTip(e) {
-    e.preventDefault();
+  function calculateTip(e = null) {
+    e?.preventDefault();
 
     if (!isValidBill || !isValidTip || !isValidNumberOfPeople) return;
 
     const parsedBill = parseFloat(billDollarsInput.replace("$", ""));
     const parsedTip = parseFloat(tipPercentInput.replace("%", ""));
     const parsedNumberOfPeople = parseInt(numberOfPeopleInput);
+
+    console.log({ parsedBill, parsedTip, parsedNumberOfPeople });
+
+    setTipPercentInput(tipPercentInput.replace("%", "") + "%");
+    setBillDollarsInput("$" + billDollarsInput.replace("$", ""));
 
     setTipDollars((parsedBill * (parsedTip / 100)) / parsedNumberOfPeople);
     setBillTotal((parsedBill + parsedBill * (parsedTip / 100)) / parsedNumberOfPeople);
@@ -100,7 +111,11 @@ const TipCalculator = () => {
         <div className="form-group">
           <label>Tip %</label>
           <div className="counter">
-            <button type="button" onClick={handleTipPercentDecrement}>
+            <button
+              disabled={!isValidTip}
+              type="button"
+              onClick={handleTipPercentDecrement}
+            >
               -
             </button>
             <input
@@ -110,7 +125,11 @@ const TipCalculator = () => {
               placeholder="Enter a tip %"
               className={isValidTip ? "" : "error"}
             />
-            <button type="button" onClick={handleTipPercentIncrement}>
+            <button
+              disabled={!isValidTip}
+              type="button"
+              onClick={handleTipPercentIncrement}
+            >
               +
             </button>
           </div>
@@ -120,7 +139,11 @@ const TipCalculator = () => {
           <label>Number Of People</label>
 
           <div className="counter">
-            <button type="button" onClick={handleNumberOfPeopleDecrement}>
+            <button
+              disabled={!isValidNumberOfPeople}
+              type="button"
+              onClick={handleNumberOfPeopleDecrement}
+            >
               -
             </button>
             <input
@@ -128,8 +151,13 @@ const TipCalculator = () => {
               value={numberOfPeopleInput}
               type="text"
               className={isValidNumberOfPeople ? "" : "error"}
+              placeholder="# of people splitting the bill"
             />
-            <button type="button" onClick={handleNumberOfPeopleIncrement}>
+            <button
+              disabled={!isValidNumberOfPeople}
+              type="button"
+              onClick={handleNumberOfPeopleIncrement}
+            >
               +
             </button>
           </div>
@@ -137,22 +165,30 @@ const TipCalculator = () => {
       </div>
 
       <div className="section">
-        <p>
-          Tip:
-          {tipDollars.toLocaleString("en-US", { style: "currency", currency: "USD" })}
-        </p>
-        {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
-          <p>/person</p>
-        )}
-        <p>
-          Total:
-          {billTotal.toLocaleString("en-US", { style: "currency", currency: "USD" })}
-        </p>
-        {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
-          <p>/person</p>
-        )}
+        <div className="result-container">
+          <div className="header-and-result">
+            <p>Tip:</p>
+            <p>
+              {tipDollars.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+            </p>
+          </div>
+          {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
+            <p className="per-person">/person</p>
+          )}
+        </div>
+        <div className="result-container">
+          <div className="header-and-result">
+            <p>Total:</p>
+            <p>
+              {billTotal.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+            </p>
+          </div>
+
+          {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
+            <p className="per-person">/person</p>
+          )}
+        </div>
       </div>
-      {/* <button type="submit">Calculate</button> */}
     </form>
   );
 };

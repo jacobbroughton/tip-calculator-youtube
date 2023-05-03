@@ -1,12 +1,13 @@
 nav {
   background-color: teal;
   width: 100%;
-  padding: 10px;
 }
 
 nav .nav-container {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 10px;
+
 }
 
 nav p {

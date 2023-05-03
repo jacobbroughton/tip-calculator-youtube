@@ -3,9 +3,16 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --color-bg-primary: #333;
+  --color-bg-secondary: #444;
+  --color-border: #ffffffde;
+  --color-text-primary: #ffffffde;
+  --color-text-secondary: #aab3be;
+  --color-button-background: #ddd;
+  --color-button-background-disabled: #a1a1a1;
+
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,9 +25,4 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-main {
-  padding: 10px;
-  display: flex;
 }
