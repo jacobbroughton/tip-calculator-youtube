@@ -1,6 +1,11 @@
+.App {
+  height: 100%;
+}
+
 main {
-  padding: 10px;
+  padding: 100px 10px 10px 10px;
   display: flex;
   max-width: 1000px;
   margin: 0 auto;
+  height: 100%;
 }

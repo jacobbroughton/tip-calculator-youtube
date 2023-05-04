@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import "./TipCalculator.css";
+import CalculatorField from "../CalculatorField/CalculatorField";
 
 const TipCalculator = () => {
-  const [billDollarsInput, setBillDollarsInput] = useState("0");
-  const [tipPercentInput, setTipPercentInput] = useState("0");
+  const [billDollarsInput, setBillDollarsInput] = useState("$0");
+  const [tipPercentInput, setTipPercentInput] = useState("15%");
   const [numberOfPeopleInput, setNumberOfPeopleInput] = useState("1");
   const [tipDollars, setTipDollars] = useState(0);
   const [billTotal, setBillTotal] = useState(0);
@@ -21,11 +22,8 @@ const TipCalculator = () => {
       const parsedTip = parseFloat(tipPercentInput.replace("%", ""));
       const parsedNumberOfPeople = parseInt(numberOfPeopleInput);
 
-      // console.log({ parsedBill, parsedTip, parsedNumberOfPeople });
-
       // TODO - Need to do something here in case user is trying to delete the %
-      console.log(tipPercentInput)
-      if (!tipPercentInput.includes("%")) {
+      if (e) {
         setTipPercentInput(tipPercentInput.replace("%", "") + "%");
         setBillDollarsInput("$" + billDollarsInput.replace("$", ""));
       }
@@ -43,59 +41,60 @@ const TipCalculator = () => {
     ]
   );
 
-  function isInvalidInput(numStr, unitType) {
+  function isValidInput(numStr, unitType) {
     if (unitType === "dollars" && numStr.match(/^\$.+/)) numStr = numStr.replace("$", "");
     if (unitType === "percent" && numStr.match(/.+%$/)) numStr = numStr.replace("%", "");
-    if (unitType === "integer") return !/^[1-9]\d*$/.test(numStr) || parseInt(numStr) < 1;
+    if (unitType === "integer")
+      return !numStr.match(/^0\d/g) && /^[1-9]\d*$/.test(numStr) && parseInt(numStr) >= 1;
     return (
-      numStr.match(/^0\d/g) || numStr === "" || isNaN(numStr) || parseInt(numStr) < 0
+      !numStr.match(/^0\d/g) && numStr !== "" && !isNaN(numStr) && parseInt(numStr) > 0
     );
   }
 
   function handleBillDollarsChange(e) {
-    const input = e.target.value;
+    const input = e.target.value.replaceAll("$", "");
 
-    setIsValidBill(!isInvalidInput(input, "dollars"));
-    setBillDollarsInput(input);
+    setIsValidBill(isValidInput(input, "dollars"));
+    setBillDollarsInput(`$${input}`);
   }
 
   function handleNumberOfPeopleChange(e) {
     const input = e.target.value;
 
-    setIsValidNumberOfPeople(!isInvalidInput(input, "integer"));
+    setIsValidNumberOfPeople(isValidInput(input, "integer"));
     setNumberOfPeopleInput(input);
   }
 
   function handleTipPercentChange(e) {
     const input = e.target.value;
 
-    setIsValidTip(!isInvalidInput(input, "percent"));
+    setIsValidTip(isValidInput(input, "percent"));
     setTipPercentInput(input);
   }
 
   function handleTipPercentDecrement() {
-    if (/0|0%/.test(tipPercentInput)) return;
-    const newInput = `${parseFloat(tipPercentInput || "0") - 1}`;
-    setIsValidTip(!isInvalidInput(newInput, "percent"));
+    if (/^0|^0%/.test(tipPercentInput)) return;
+    const newInput = `${parseFloat(tipPercentInput || "0") - 1}%`;
+    setIsValidTip(isValidInput(newInput, "percent"));
     setTipPercentInput(newInput);
   }
 
   function handleTipPercentIncrement() {
-    const newInput = `${parseFloat(tipPercentInput || "0") + 1}`;
-    setIsValidTip(!isInvalidInput(newInput, "percent"));
+    const newInput = `${parseFloat(tipPercentInput || "0") + 1}%`;
+    setIsValidTip(isValidInput(newInput, "percent"));
     setTipPercentInput(newInput);
   }
 
   function handleNumberOfPeopleDecrement() {
     if (numberOfPeopleInput === "1") return;
     const newInput = `${parseInt(numberOfPeopleInput || "0") - 1}`;
-    setIsValidNumberOfPeople(!isInvalidInput(newInput, "integer"));
+    setIsValidNumberOfPeople(isValidInput(newInput, "integer"));
     setNumberOfPeopleInput(newInput);
   }
 
   function handleNumberOfPeopleIncrement() {
     const newInput = `${parseInt(numberOfPeopleInput || "0") + 1}`;
-    setIsValidNumberOfPeople(!isInvalidInput(newInput, "integer"));
+    setIsValidNumberOfPeople(isValidInput(newInput, "integer"));
     setNumberOfPeopleInput(newInput);
   }
 
@@ -119,72 +118,45 @@ const TipCalculator = () => {
   return (
     <form className="tip-calculator" onSubmit={calculateTip}>
       <div className="section">
-        <div className="form-group">
-          <label>Bill</label>
-          <input
-            onChange={handleBillDollarsChange}
-            value={billDollarsInput}
-            type="text"
-            placeholder="Enter your bill"
-            className={isValidBill ? "" : "error"}
-          />
-        </div>
+        <CalculatorField
+          label="Bill"
+          counterOptions={{
+            isCounter: false,
+          }}
+          inputValue={billDollarsInput}
+          onChangeHandler={handleBillDollarsChange}
+          isValidValue={isValidBill}
+          placeholder="Enter your bill"
+        />
 
-        <div className="form-group">
-          <label>Tip %</label>
-          <div className="counter">
-            <button
-              // disabled={!isValidTip}
-              type="button"
-              onClick={handleTipPercentDecrement}
-            >
-              -
-            </button>
-            <input
-              onChange={handleTipPercentChange}
-              value={tipPercentInput}
-              type="text"
-              placeholder="% on top of bill"
-              className={isValidTip ? "" : "error"}
-            />
-            <button
-              // disabled={!isValidTip}
-              type="button"
-              onClick={handleTipPercentIncrement}
-            >
-              +
-            </button>
-          </div>
-        </div>
+        <CalculatorField
+          label="Tip %"
+          counterOptions={{
+            isCounter: true,
+            decrementHandler: handleTipPercentDecrement,
+            incrementHandler: handleTipPercentIncrement,
+            decrementDisabled: tipPercentInput <= 0 || !/^\d/.test(tipPercentInput),
+          }}
+          inputValue={tipPercentInput}
+          onChangeHandler={handleTipPercentChange}
+          isValidValue={isValidTip}
+          placeholder="% on top of bill"
+        />
 
-        <div className="form-group">
-          <label>Number Of People</label>
-
-          <div className="counter">
-            <button
-              // disabled={!isValidNumberOfPeople}
-              type="button"
-              onClick={handleNumberOfPeopleDecrement}
-            >
-              -
-            </button>
-            <input
-              onChange={handleNumberOfPeopleChange}
-              value={numberOfPeopleInput}
-              type="number"
-              min={0}
-              className={isValidNumberOfPeople ? "" : "error"}
-              placeholder="# of people splitting the bill"
-            />
-            <button
-              // disabled={!isValidNumberOfPeople}
-              type="button"
-              onClick={handleNumberOfPeopleIncrement}
-            >
-              +
-            </button>
-          </div>
-        </div>
+        <CalculatorField
+          label="Number Of People"
+          counterOptions={{
+            isCounter: true,
+            decrementHandler: handleNumberOfPeopleDecrement,
+            incrementHandler: handleNumberOfPeopleIncrement,
+            decrementDisabled:
+              numberOfPeopleInput <= 0 || !/^\d/.test(numberOfPeopleInput),
+          }}
+          inputValue={numberOfPeopleInput}
+          onChangeHandler={handleNumberOfPeopleChange}
+          isValidValue={isValidNumberOfPeople}
+          placeholder="# of people splitting the bill"
+        />
       </div>
 
       <div className="section">
@@ -200,7 +172,7 @@ const TipCalculator = () => {
                 : "-"}
             </p>
           </div>
-          {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
+          {isValidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
             <p className="per-person">/person</p>
           )}
         </div>
@@ -217,7 +189,7 @@ const TipCalculator = () => {
             </p>
           </div>
 
-          {!isInvalidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
+          {isValidInput(numberOfPeopleInput) && parseInt(numberOfPeopleInput) > 1 && (
             <p className="per-person">/person</p>
           )}
         </div>

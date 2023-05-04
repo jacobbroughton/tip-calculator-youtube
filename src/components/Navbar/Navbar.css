@@ -1,13 +1,15 @@
 nav {
-  background-color: teal;
+  background-color: var(--color-bg-secondary);
+  box-shadow: var(--container-shadow-heavy);
   width: 100%;
+  position: fixed;
+  top: 0;
 }
 
 nav .nav-container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 10px;
-
 }
 
 nav p {

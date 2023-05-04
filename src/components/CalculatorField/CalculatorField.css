@@ -1,0 +1,53 @@
+.tip-calculator .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tip-calculator .form-group label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.tip-calculator .form-group input {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  padding: 3px;
+  border-radius: 3px;
+  background-color: transparent;
+  width: 100%;
+}
+
+.tip-calculator .form-group input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.tip-calculator .form-group input.error,
+.tip-calculator .form-group input.error:focus-visible {
+  border-color: var(--color-error);
+  outline-color: var(--color-error);
+  outline-style: solid;
+}
+
+.tip-calculator .form-group .counter {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.tip-calculator .form-group .counter button {
+  background-color: var(--color-button-background);
+  color: var(--color-text-primary);
+  font-size: 1.3rem;
+  min-width: 30px;
+  width: 30px;
+  border-radius: 3px;
+  border: 0;
+  transition: opacity 0.1s ease;
+}
+
+.tip-calculator .form-group .counter button:disabled {
+  cursor: not-allowed;
+  opacity: 0.25;
+}

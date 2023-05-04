@@ -1,7 +1,7 @@
 .tip-calculator {
+  background-color: var(--color-bg-secondary);
+  box-shadow: var(--container-shadow);
   width: 100%;
-  background-color: #444;
-  box-shadow: 0 1px 2px #000000;
   display: flex;
   border-radius: 5px;
 }
@@ -14,64 +14,11 @@
   gap: 20px;
   padding: 25px 15px;
   width: 100%;
-  overflow-x: scroll;
 }
 
 .tip-calculator .section:not(:first-child) {
-  border-left: 1px solid grey;
-}
-
-.tip-calculator .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.tip-calculator .form-group label {
-  font-weight: 600;
-  color: #aab3be;
-}
-
-.tip-calculator .form-group input {
-  font-size: 1rem;
-  padding: 3px;
-  border-radius: 3px;
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: white;
-  width: 100%;
-}
-
-.tip-calculator .form-group input::placeholder {
-  color: var(--color-text-secondary);
-}
-
-.tip-calculator .form-group input.error,
-.tip-calculator .form-group input.error:focus-visible {
-  border-color: red;
-  outline-color: red;
-  outline-style: solid;
-}
-
-.tip-calculator .form-group .counter {
-  display: flex;
-  gap: 3px;
-  width: 100%;
-}
-
-.tip-calculator .form-group .counter button {
-  font-size: 1.3rem;
-  width: 30px;
-  background-color: var(--color-button-background);
-  color: black;
-  border-radius: 3px;
-  border: 0;
-  transition: opacity 0.1s ease;
-}
-
-.tip-calculator .form-group .counter button:disabled {
-  cursor: not-allowed;
-  opacity: 0.25;
+  border-left: 1px solid var(--color-border);
+  overflow-x: scroll;
 }
 
 .tip-calculator .result-container {
@@ -103,7 +50,7 @@
   }
 
   .tip-calculator .section:not(:first-child) {
+    border-top: 1px solid var(--color-border);
     border-left: 0;
-    border-top: 1px solid grey;
   }
 }
