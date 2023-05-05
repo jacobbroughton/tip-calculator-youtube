@@ -53,4 +53,13 @@
     border-top: 1px solid var(--color-border);
     border-left: 0;
   }
+
+  .tip-calculator label {
+    font-size: 0.875rem;
+  }
+
+  .tip-calculator .result-container .header-and-result p {
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
 }

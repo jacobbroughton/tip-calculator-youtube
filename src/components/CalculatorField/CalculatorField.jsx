@@ -3,12 +3,12 @@ import "./CalculatorField.css";
 
 const CalculatorField = ({
   label = "",
-  counterOptions: {
-    isCounter = false,
-    decrementHandler = () => null,
-    incrementHandler = () => null,
-    decrementDisabled = false,
-    incrementDisabled = false,
+  counterOptions = {
+    isCounter: false,
+    decrementHandler: () => null,
+    incrementHandler: () => null,
+    decrementDisabled: false,
+    incrementDisabled: false,
   },
   inputValue,
   onChangeHandler,
@@ -19,8 +19,12 @@ const CalculatorField = ({
     <div className="form-group">
       <label>{label}</label>
       <div className="counter">
-        {isCounter && (
-          <button type="button" onClick={decrementHandler} disabled={decrementDisabled}>
+        {counterOptions.isCounter && (
+          <button
+            type="button"
+            onClick={counterOptions.decrementHandler}
+            disabled={counterOptions.decrementDisabled}
+          >
             -
           </button>
         )}
@@ -31,8 +35,12 @@ const CalculatorField = ({
           placeholder={placeholder}
           className={isValidValue ? "" : "error"}
         />
-        {isCounter && (
-          <button type="button" onClick={incrementHandler} disabled={incrementDisabled}>
+        {counterOptions.isCounter && (
+          <button
+            type="button"
+            onClick={counterOptions.incrementHandler}
+            disabled={counterOptions.incrementDisabled}
+          >
             +
           </button>
         )}

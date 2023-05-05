@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./TipCalculator.css";
 import CalculatorField from "../CalculatorField/CalculatorField";
 
@@ -22,7 +22,6 @@ const TipCalculator = () => {
       const parsedTip = parseFloat(tipPercentInput.replace("%", ""));
       const parsedNumberOfPeople = parseInt(numberOfPeopleInput);
 
-      // TODO - Need to do something here in case user is trying to delete the %
       if (e) {
         setTipPercentInput(tipPercentInput.replace("%", "") + "%");
         setBillDollarsInput("$" + billDollarsInput.replace("$", ""));
@@ -47,7 +46,7 @@ const TipCalculator = () => {
     if (unitType === "integer")
       return !numStr.match(/^0\d/g) && /^[1-9]\d*$/.test(numStr) && parseInt(numStr) >= 1;
     return (
-      !numStr.match(/^0\d/g) && numStr !== "" && !isNaN(numStr) && parseInt(numStr) > 0
+      !numStr.match(/^0\d/g) && numStr !== "" && !isNaN(numStr) && parseInt(numStr) >= 0
     );
   }
 
@@ -135,7 +134,7 @@ const TipCalculator = () => {
             isCounter: true,
             decrementHandler: handleTipPercentDecrement,
             incrementHandler: handleTipPercentIncrement,
-            decrementDisabled: tipPercentInput <= 0 || !/^\d/.test(tipPercentInput),
+            decrementDisabled: parseInt(tipPercentInput) <= 0 || !/^\d/.test(tipPercentInput),
           }}
           inputValue={tipPercentInput}
           onChangeHandler={handleTipPercentChange}
@@ -150,7 +149,7 @@ const TipCalculator = () => {
             decrementHandler: handleNumberOfPeopleDecrement,
             incrementHandler: handleNumberOfPeopleIncrement,
             decrementDisabled:
-              numberOfPeopleInput <= 0 || !/^\d/.test(numberOfPeopleInput),
+              parseInt(numberOfPeopleInput) <= 1 || !/^\d/.test(numberOfPeopleInput),
           }}
           inputValue={numberOfPeopleInput}
           onChangeHandler={handleNumberOfPeopleChange}
