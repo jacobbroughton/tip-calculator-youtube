@@ -2,13 +2,14 @@ import Navbar from "./components/Navbar/Navbar";
 import "./App.css";
 import TipCalculator from "./components/TipCalculator/TipCalculator";
 import Footer from "./components/Footer/Footer";
+import TipCalculatorNoComponent from "./components/TipCalculator/TipCalculatorNoComponents";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
       <main>
-        <TipCalculator />
+        <TipCalculatorNoComponent/>
       </main>
       <Footer/>
     </div>

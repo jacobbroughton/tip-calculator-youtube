@@ -45,6 +45,11 @@
   border-radius: 3px;
   border: 0;
   transition: opacity 0.1s ease;
+  cursor: pointer;
+}
+
+.tip-calculator .form-group .counter button:hover:not(:disabled) {
+  background-color: var(--color-button-background-hover);
 }
 
 .tip-calculator .form-group .counter button:disabled {
